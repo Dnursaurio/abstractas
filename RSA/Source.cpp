@@ -40,10 +40,32 @@ bool factores_prim_de_n(int n, int &p, int &q)
 	}
 }
 
-void valor_phi(int n,int p,int q)
+int valor_phi(int p,int q)
 {
-	int phi = (p - 1) * (q-1);
-	cout << "el valor phi de: " << n << " es: " << phi;
+	return (p - 1) * (q - 1);
+}
+
+int mcd(int a, int b)
+{
+	while (b != 0)
+	{
+		int temp = b;
+		b = a % b;
+		a = temp;
+	}
+	return  a;
+}
+
+int clave_publica(int phi)
+{
+	for (int e = 2; e < phi; e++)
+	{
+		if (mcd(e,phi)==1)
+		{
+			return e;
+		}
+	}
+	return -1;
 }
 
 int main()
@@ -59,11 +81,24 @@ int main()
 	if (factores_prim_de_n(n,p,q))
 	{
 		cout << "el numero introducido es: " << n << " descompuesto en p y q con p de valor: " << p << " y q de valor: " << q << endl;
+		
+		int phi = valor_phi(p,q);
+		cout << "valor de phi de n es: " << phi << endl;
+
+		int e = clave_publica(phi);
+		if (e != 1)
+		{
+			cout << "La clave publica (e) es: " << e << endl;
+		}
+		else
+		{
+			cout << "No hay clve publica, piña pes" << endl;
+		}
 	}
 	else
 	{
 		cout << "este numero no cumple con la descompocicion prima" << endl;
 	}
-	valor_phi(n,p,q);
+
 	return 0;
 }
