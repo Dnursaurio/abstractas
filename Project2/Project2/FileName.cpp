@@ -63,12 +63,12 @@ int main() {
     // Imprimir los valores de e
     cout << "Los valores posibles de e son: ";
     for (long long e : posibles_e) {
-        cout << e << " ";
+        cout << e << " "; //cone sto contamos todos los valores posibles mas el 1
     }
     cout << endl;
 
     // Imprimir la cantidad de valores posibles de e
     cout << "Cantidad de valores posibles de e: " << posibles_e.size() << endl;
-
+    cout << "nota: a este resultado sumale 1 ya que el 1 tambien se incluye, pero no es efectivo en RSA pos eso no es incluido como valor posible" << endl;
     return 0;
 }

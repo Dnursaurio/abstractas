@@ -1,4 +1,1 @@
-﻿  FileName.cpp
-C:\Users\ALUMNO-M\source\repos\Project3\Project3\FileName.cpp(80,13): warning C4566: el carácter representado por el nombre de carácter universal '\u03C6' no se puede representar en la página de códigos actual (1252)
-C:\Users\ALUMNO-M\source\repos\Project3\Project3\FileName.cpp(84,17): warning C4566: el carácter representado por el nombre de carácter universal '\u03C6' no se puede representar en la página de códigos actual (1252)
-  Project3.vcxproj -> C:\Users\ALUMNO-M\source\repos\Project3\x64\Debug\Project3.exe
+﻿  Project3.vcxproj -> E:\Algoritmos Astractas\Project3\x64\Debug\Project3.exe

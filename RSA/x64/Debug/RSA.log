@@ -1,3 +1,2 @@
 ﻿  Source.cpp
-E:\Algoritmos Astractas\RSA\Source.cpp(41): warning C4715: 'factores_prim_de_n': no todas las rutas de acceso de control devuelven un valor
   RSA.vcxproj -> E:\Algoritmos Astractas\RSA\x64\Debug\RSA.exe
