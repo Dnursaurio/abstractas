@@ -1,2 +1,3 @@
 ﻿  Source.cpp
-  RSA.vcxproj -> E:\Algoritmos Astractas\RSA\x64\Debug\RSA.exe
+D:\abstractas\RSA\Source.cpp(33,24): warning C4101: 'mensaje': variable local sin referencia
+  RSA.vcxproj -> D:\abstractas\RSA\x64\Debug\RSA.exe

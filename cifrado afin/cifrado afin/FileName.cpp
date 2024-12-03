@@ -1,30 +1,32 @@
 #include <iostream>
 #include <string>
+#include <sstream>
+#include <vector>
 #include <cctype>
 
 using namespace std;
 
-// Función para cifrar el mensaje
+// Función para cifrar el mensaje usando el alfabeto inglés
 string encriptar(string mensaje, int a, int k) {
     string mensaje_encriptado = "";
 
-    // Recorremos cada letra del mensaje
+    // Recorremos cada carácter del mensaje
     for (char& c : mensaje) {
-        if (isalpha(c)) {  // Verificamos si el caracter es una letra
-            c = tolower(c);  // Convertimos la letra a minúscula
-            int p = c - 'a';  // Obtenemos el índice de la letra (0 para 'a', 25 para 'z')
-            char letra_encriptada = ((a * p + k) % 26) + 'a';  // Aplicamos la fórmula de cifrado
+        if (isalpha(c)) {  // Solo ciframos letras
+            char base = (isupper(c)) ? 'A' : 'a';  // Determinamos si la letra es mayúscula o minúscula
+            int p = c - base;  // Obtenemos el índice de la letra (0 para 'a' o 'A', 25 para 'z' o 'Z')
+            char letra_encriptada = ((a * p + k) % 26) + base;  // Aplicamos la fórmula de cifrado
             mensaje_encriptado += letra_encriptada;
         }
         else {
-            mensaje_encriptado += c;  // Si no es una letra, agregamos el caracter tal cual
+            mensaje_encriptado += c;  // Si no es una letra, la dejamos tal cual
         }
     }
 
     return mensaje_encriptado;
 }
 
-// Función para descifrar el mensaje
+// Función para descifrar el mensaje usando el alfabeto inglés
 string desencriptar(string mensaje, int a, int k) {
     string mensaje_desencriptado = "";
 
@@ -41,20 +43,33 @@ string desencriptar(string mensaje, int a, int k) {
         return "No se pudo encontrar el inverso de a mod 26. La clave 'a' no es válida.";
     }
 
-    // Recorremos cada letra del mensaje
+    // Recorremos cada carácter del mensaje
     for (char& c : mensaje) {
-        if (isalpha(c)) {  // Verificamos si el caracter es una letra
-            c = tolower(c);  // Convertimos la letra a minúscula
-            int p = c - 'a';  // Obtenemos el índice de la letra (0 para 'a', 25 para 'z')
-            char letra_desencriptada = ((a_inverso * (p - k) + 26) % 26) + 'a';  // Aplicamos la fórmula de descifrado
+        if (isalpha(c)) {  // Solo desciframos letras
+            char base = (isupper(c)) ? 'A' : 'a';  // Determinamos si la letra es mayúscula o minúscula
+            int p = c - base;  // Obtenemos el índice de la letra (0 para 'a' o 'A', 25 para 'z' o 'Z')
+            char letra_desencriptada = ((a_inverso * (p - k + 26)) % 26) + base;  // Aplicamos la fórmula de descifrado
             mensaje_desencriptado += letra_desencriptada;
         }
         else {
-            mensaje_desencriptado += c;  // Si no es una letra, agregamos el caracter tal cual
+            mensaje_desencriptado += c;  // Si no es una letra, la dejamos tal cual
         }
     }
 
     return mensaje_desencriptado;
+}
+
+// Función para procesar varias palabras o números separados por espacios
+vector<string> separarTexto(string texto) {
+    vector<string> palabras;
+    stringstream ss(texto);
+    string palabra;
+
+    while (getline(ss, palabra, ' ')) {
+        palabras.push_back(palabra);  // Agregar cada "palabra" al vector
+    }
+
+    return palabras;
 }
 
 int main() {
@@ -62,8 +77,11 @@ int main() {
     int a, k;
     int opcion;
 
-    cout << "Ingresa el mensaje a encriptar o desencriptar: ";
+    cout << "Ingresa el mensaje a encriptar o desencriptar (puede incluir múltiples palabras separadas por espacio): ";
     getline(cin, mensaje);  // Leemos el mensaje completo
+
+    // Procesamos la entrada y separamos las "palabras"
+    vector<string> palabras = separarTexto(mensaje);
 
     cout << "Ingresa el valor de 'a' (clave multiplicativa): ";
     cin >> a;
@@ -75,14 +93,18 @@ int main() {
     cout << "Opción: ";
     cin >> opcion;
 
-    // Ejecutamos la opción seleccionada
+    // Procesamos cada palabra del mensaje
     if (opcion == 1) {
-        string mensaje_encriptado = encriptar(mensaje, a, k);
-        cout << "Mensaje encriptado: " << mensaje_encriptado << endl;
+        for (string& palabra : palabras) {
+            string mensaje_encriptado = encriptar(palabra, a, k);
+            cout << "Palabra encriptada: " << mensaje_encriptado << endl;
+        }
     }
     else if (opcion == 2) {
-        string mensaje_desencriptado = desencriptar(mensaje, a, k);
-        cout << "Mensaje desencriptado: " << mensaje_desencriptado << endl;
+        for (string& palabra : palabras) {
+            string mensaje_desencriptado = desencriptar(palabra, a, k);
+            cout << mensaje_desencriptado<<" ";
+        }
     }
     else {
         cout << "Opción no válida." << endl;

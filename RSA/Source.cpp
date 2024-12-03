@@ -1,4 +1,6 @@
 #include <iostream>
+#include <sstream>
+#include <vector>
 using namespace std;
 
 // Función para realizar la exponenciación modular: (base^exp) % mod
@@ -14,10 +16,24 @@ long long exp_mod(long long base, long long exp, long long mod) {
     return result;
 }
 
+// Función para separar una cadena de texto en números enteros
+vector<long long> separarNumeros(string texto) {
+    vector<long long> numeros;
+    stringstream ss(texto);
+    long long numero;
+
+    while (ss >> numero) {
+        numeros.push_back(numero);  // Agregamos cada número al vector
+    }
+
+    return numeros;
+}
+
 int main() {
     long long n, e, d, mensaje, resultado;
     int opcion;
 
+    // Solicitar valores de la clave pública y privada
     cout << "Ingrese el valor de n (parte de la clave pública): ";
     cin >> n;
     cout << "Ingrese el valor de e (clave pública para cifrado): ";
@@ -25,20 +41,40 @@ int main() {
     cout << "Ingrese el valor de d (clave privada para descifrado): ";
     cin >> d;
 
+    // Limpiar el buffer para leer la línea completa con espacios
+    cin.ignore();
+
+    // Leer la opción para cifrar o descifrar
     cout << "Seleccione una opción:\n1. Cifrar\n2. Descifrar\nOpción: ";
     cin >> opcion;
 
+    // Limpiar el buffer nuevamente antes de leer los números
+    cin.ignore();
+
+    // Solicitar los números a cifrar o descifrar
+    cout << "Ingrese los números (separados por espacio): ";
+    string input;
+    getline(cin, input);  // Leer la línea completa
+
+    // Separar los números ingresados
+    vector<long long> numeros = separarNumeros(input);
+
+    // Procesar los números según la opción seleccionada
     if (opcion == 1) { // Cifrar
-        cout << "Ingrese el número a cifrar: ";
-        cin >> mensaje;
-        resultado = exp_mod(mensaje, e, n);
-        cout << "Número cifrado: " << resultado << endl;
+        cout << "Números cifrados: ";
+        for (long long num : numeros) {
+            resultado = exp_mod(num, e, n);
+            cout << resultado << " ";  // Imprimir cada número cifrado
+        }
+        cout << endl;
     }
     else if (opcion == 2) { // Descifrar
-        cout << "Ingrese el número cifrado: ";
-        cin >> mensaje;
-        resultado = exp_mod(mensaje, d, n);
-        cout << "Número descifrado: " << resultado << endl;
+        cout << "Números descifrados: ";
+        for (long long num : numeros) {
+            resultado = exp_mod(num, d, n);
+            cout << resultado << " ";  // Imprimir cada número descifrado
+        }
+        cout << endl;
     }
     else {
         cout << "Opción no válida." << endl;
