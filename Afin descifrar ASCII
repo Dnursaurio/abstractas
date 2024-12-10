@@ -1,0 +1,86 @@
+#include <iostream>
+#include <sstream>
+#include <vector>
+
+using namespace std;
+
+// Función para encriptar un carácter usando la fórmula (n * k1 + k2) % 256
+int encriptar(int n, int k1, int k2) {
+    return (n * k1 + k2) % 256;
+}
+
+// Función para desencriptar un carácter usando la fórmula inversa
+int desencriptar(int c, int k1, int k2) {
+    // Encontrar el inverso modular de k1 en módulo 256
+    int inverso_k1 = -1;
+    for (int i = 0; i < 256; i++) {
+        if ((k1 * i) % 256 == 1) {
+            inverso_k1 = i;
+            break;
+        }
+    }
+
+    // Si no encontramos un inverso, no podemos desencriptar (esto podría ser un problema de claves)
+    if (inverso_k1 == -1) {
+        cerr << "Error: No se pudo encontrar el inverso modular de k1." << endl;
+        exit(1);
+    }
+
+    // Aplicar la fórmula inversa: n = (c - k2) * inverso_k1 % 256
+    return ((c - k2 + 256) % 256 * inverso_k1) % 256;
+}
+
+int main() {
+    string input;
+    int k1 = 7, k2 = 3;
+
+    // Preguntar si el usuario quiere encriptar o desencriptar
+    cout << "¿Quieres encriptar o desencriptar un mensaje? (e/d): ";
+    char opcion;
+    cin >> opcion;
+    cin.ignore();  // Para limpiar el buffer de entrada
+
+    if (opcion == 'e') {
+        // Encriptar
+        cout << "Introduce el mensaje a encriptar (puede contener letras, números y símbolos): ";
+        getline(cin, input);
+
+        vector<int> cifrado;
+
+        // Encriptar el mensaje
+        for (char c : input) {
+            int ascii_value = static_cast<int>(c);  // Obtener el valor ASCII del carácter
+            int numero_cifrado = encriptar(ascii_value, k1, k2);  // Encriptar
+            cifrado.push_back(numero_cifrado);  // Almacenar el número cifrado
+        }
+
+        // Mostrar los números cifrados separados por espacio
+        cout << "El mensaje encriptado es: ";
+        for (int num : cifrado) {
+            cout << num << " ";
+        }
+        cout << endl;
+    } else if (opcion == 'd') {
+        // Desencriptar
+        cout << "Introduce el mensaje encriptado (números separados por espacio): ";
+        getline(cin, input);
+        stringstream ss(input);
+        vector<int> cifrado;
+        int num;
+
+        while (ss >> num) {
+            cifrado.push_back(num);
+        }
+
+        cout << "El mensaje desencriptado es: ";
+        for (int c : cifrado) {
+            char original = static_cast<char>(desencriptar(c, k1, k2));  // Desencriptar
+            cout << original;
+        }
+        cout << endl;
+    } else {
+        cout << "Opción no válida. Elige 'e' para encriptar o 'd' para desencriptar." << endl;
+    }
+
+    return 0;
+}
